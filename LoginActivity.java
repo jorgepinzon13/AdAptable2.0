@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         email = prefs.getString("email","");
 
         if (prefs.getInt("login",-1)==1){
-            Intent intent = new Intent(LoginActivity.this, Main2Activity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("username", username);
             intent.putExtra("password", password);
             intent.putExtra("email", email);

@@ -41,7 +41,7 @@ public class Settings2Activity extends AppCompatActivity {
         bAdaptable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(Settings2Activity.this, Main2Activity.class);
+                Intent intent= new Intent(Settings2Activity.this, MainActivity.class);
                 intent.putExtra("username",username);
                 intent.putExtra("email",email);
                 startActivity(intent);

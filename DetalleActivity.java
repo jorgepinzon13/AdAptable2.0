@@ -1,31 +1,40 @@
 package com.example.jorge.adaptable;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class Search2Activity extends AppCompatActivity {
+import com.bumptech.glide.Glide;
 
+
+public class DetalleActivity extends AppCompatActivity {
+
+    public static final String EXTRA_PARAM_ID = "com.herprogramacion.Promos2015.extra.ID";
+    public static final String VIEW_NAME_HEADER_IMAGE = "imagen_compartida";
+    private Promo itemDetallado;
+    private ImageView imagenExtendida;
     String username,email;
     Intent intent;
     ImageView bBusq,bPerfil,bUbi,bConf;
     TextView bAdaptable;
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search2);
+        setContentView(R.layout.activity_detalle);
 
-        prefs = getSharedPreferences("MisPreferencias",MODE_PRIVATE);
-        editor = prefs.edit();
+        //usarToolbar();
+
+        // Obtener el Promo con el identificador establecido en la actividad principal
+        itemDetallado = Promo.getItem(getIntent().getIntExtra(EXTRA_PARAM_ID, 0));
+
+        imagenExtendida = (ImageView) findViewById(R.id.imagen_extendida);
+
+        cargarImagenExtendida();
 
         bBusq = (ImageView) findViewById(R.id.bBusq);
         bPerfil = (ImageView) findViewById(R.id.bPerfil);
@@ -34,15 +43,24 @@ public class Search2Activity extends AppCompatActivity {
         bAdaptable = (TextView) findViewById(R.id.bAdaptable);
 
         Bundle extras = getIntent().getExtras();
-
         username = extras.getString("username");
         email = extras.getString("email");
-
 
         bAdaptable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(Search2Activity.this, MainActivity.class);
+                Intent intent= new Intent(DetalleActivity.this, MainActivity.class);
+                intent.putExtra("username",username);
+                intent.putExtra("email",email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        bBusq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(DetalleActivity.this, Search2Activity.class);
                 intent.putExtra("username",username);
                 intent.putExtra("email",email);
                 startActivity(intent);
@@ -54,7 +72,7 @@ public class Search2Activity extends AppCompatActivity {
         bPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(Search2Activity.this, Perfil2Activity.class);
+                Intent intent= new Intent(DetalleActivity.this, Perfil2Activity.class);
                 intent.putExtra("username",username);
                 intent.putExtra("email",email);
                 startActivity(intent);
@@ -66,7 +84,7 @@ public class Search2Activity extends AppCompatActivity {
         bUbi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(Search2Activity.this, MapsActivity.class);
+                Intent intent= new Intent(DetalleActivity.this, MapsActivity.class);
                 intent.putExtra("username",username);
                 intent.putExtra("email",email);
                 startActivity(intent);
@@ -78,7 +96,7 @@ public class Search2Activity extends AppCompatActivity {
         bConf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(Search2Activity.this, Settings2Activity.class);
+                Intent intent= new Intent(DetalleActivity.this, Settings2Activity.class);
                 intent.putExtra("username",username);
                 intent.putExtra("email",email);
                 startActivity(intent);
@@ -86,7 +104,16 @@ public class Search2Activity extends AppCompatActivity {
             }
         });
 
-
-
     }
+
+    private void cargarImagenExtendida() {
+        Glide.with(imagenExtendida.getContext())
+                .load(itemDetallado.getIdDrawable())
+                .into(imagenExtendida);
+    }
+/*
+    private void usarToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }*/
 }
