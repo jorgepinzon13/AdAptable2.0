@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class Search2Activity extends AppCompatActivity {
 
-    String username,email;
+    String username,id;
     Intent intent;
     ImageView bBusq,bPerfil,bUbi,bConf;
     TextView bAdaptable;
@@ -36,15 +36,14 @@ public class Search2Activity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         username = extras.getString("username");
-        email = extras.getString("email");
-
+        id = extras.getString("ID");
 
         bAdaptable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(Search2Activity.this, MainActivity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -56,7 +55,7 @@ public class Search2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(Search2Activity.this, Perfil2Activity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -68,7 +67,7 @@ public class Search2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(Search2Activity.this, MapsActivity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -80,7 +79,7 @@ public class Search2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(Search2Activity.this, Settings2Activity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }

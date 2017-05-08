@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    String username, email;
+    String username,id;
     Intent intent;
     ImageView bBusq, bPerfil, bUbi, bConf;
     TextView bAdaptable;
@@ -52,14 +52,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Bundle extras = getIntent().getExtras();
         username = extras.getString("username");
-        email = extras.getString("email");
+        id = extras.getString("ID");
 
         bAdaptable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, MainActivity.class);
                 intent.putExtra("username", username);
-                intent.putExtra("email", email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -70,7 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, Search2Activity.class);
                 intent.putExtra("username", username);
-                intent.putExtra("email", email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -82,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, Perfil2Activity.class);
                 intent.putExtra("username", username);
-                intent.putExtra("email", email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -94,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, Settings2Activity.class);
                 intent.putExtra("username", username);
-                intent.putExtra("email", email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }

@@ -2,6 +2,8 @@ package com.example.jorge.adaptable;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,11 +12,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.ProfilePictureView;
+
+import java.net.URL;
+
 public class Perfil2Activity extends AppCompatActivity {
 
-    String username,email;
+    String username,id;
     Intent intent;
-    TextView eUsuarioP,eEmailP, bAdaptable;
+    TextView eUsuarioP, bAdaptable;
     ImageView bBusq,bPerfil,bUbi,bConf,bLogOut;
 
     SharedPreferences prefs;
@@ -24,6 +31,8 @@ public class Perfil2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil2);
+
+
 
         prefs = getSharedPreferences("MisPreferencias",MODE_PRIVATE);
         editor = prefs.edit();
@@ -37,14 +46,17 @@ public class Perfil2Activity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         username = extras.getString("username");
-        email = extras.getString("email");
+        id = extras.getString("ID");
 
 
+        ProfilePictureView profilePictureView;
+
+        profilePictureView = (ProfilePictureView) findViewById(R.id.friendProfilePicture);
+
+        profilePictureView.setProfileId(id);
 
         eUsuarioP = (TextView) findViewById(R.id.eUsuarioP);
         eUsuarioP.setText(extras.getString("username"));
-        eEmailP = (TextView) findViewById(R.id.eEmailP);
-        eEmailP.setText(extras.getString("email"));
 
 
         bAdaptable.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +64,7 @@ public class Perfil2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(Perfil2Activity.this, MainActivity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -63,7 +75,7 @@ public class Perfil2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(Perfil2Activity.this, Search2Activity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -75,7 +87,7 @@ public class Perfil2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(Perfil2Activity.this, MapsActivity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -87,7 +99,7 @@ public class Perfil2Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(Perfil2Activity.this, Settings2Activity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -96,17 +108,20 @@ public class Perfil2Activity extends AppCompatActivity {
         bLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                editor.putInt("login",-1);
-                editor.commit();
-                Intent intent= new Intent(Perfil2Activity.this, LoginActivity.class);
-                intent.putExtra("username",username);
-                intent.putExtra("email",email);
-                startActivity(intent);
-                finish();
+                LoginManager.getInstance().logOut();
+                goMainActivity();
             }
         });
 
 
     }
+
+
+
+
+    private void goMainActivity() {
+        Intent intent = new Intent (Perfil2Activity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 }
