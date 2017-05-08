@@ -16,7 +16,7 @@ public class DetalleActivity extends AppCompatActivity {
     public static final String VIEW_NAME_HEADER_IMAGE = "imagen_compartida";
     private Promo itemDetallado;
     private ImageView imagenExtendida;
-    String username,email;
+    String username;
     Intent intent;
     ImageView bBusq,bPerfil,bUbi,bConf;
     TextView bAdaptable;
@@ -44,14 +44,12 @@ public class DetalleActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         username = extras.getString("username");
-        email = extras.getString("email");
 
         bAdaptable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, MainActivity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
                 startActivity(intent);
                 finish();
             }
@@ -62,7 +60,6 @@ public class DetalleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, Search2Activity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
                 startActivity(intent);
                 finish();
             }
@@ -74,7 +71,6 @@ public class DetalleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, Perfil2Activity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
                 startActivity(intent);
                 finish();
             }
@@ -86,7 +82,6 @@ public class DetalleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, MapsActivity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
                 startActivity(intent);
                 finish();
             }
@@ -98,7 +93,6 @@ public class DetalleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, Settings2Activity.class);
                 intent.putExtra("username",username);
-                intent.putExtra("email",email);
                 startActivity(intent);
                 finish();
             }

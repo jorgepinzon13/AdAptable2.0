@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity
         private GridView gridView;
         private AdaptadordePromos adaptador;
 
-        String username,email;
+        String username,id;
         Intent intent;
         ImageView bBusq,bPerfil,bUbi,bConf;
         TextView bAdaptable;
@@ -67,14 +67,14 @@ public class MainActivity extends AppCompatActivity
 
             Bundle extras = getIntent().getExtras();
             username = extras.getString("username");
-            email = extras.getString("email");
+            id = extras.getString("ID");
 
             bBusq.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent= new Intent(MainActivity.this, Search2Activity.class);
                     intent.putExtra("username",username);
-                    intent.putExtra("email",email);
+                    intent.putExtra("ID",id);
                     startActivity(intent);
                     finish();
                 }
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View v) {
                     Intent intent= new Intent(MainActivity.this, Perfil2Activity.class);
                     intent.putExtra("username",username);
-                    intent.putExtra("email",email);
+                    intent.putExtra("ID",id);
                     startActivity(intent);
                     finish();
                 }
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View v) {
                     Intent intent= new Intent(MainActivity.this, MapsActivity.class);
                     intent.putExtra("username",username);
-                    intent.putExtra("email",email);
+                    intent.putExtra("ID",id);
                     startActivity(intent);
                     finish();
                 }
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View v) {
                     Intent intent= new Intent(MainActivity.this, Settings2Activity.class);
                     intent.putExtra("username",username);
-                    intent.putExtra("email",email);
+                    intent.putExtra("ID",id);
                     startActivity(intent);
                     finish();
                 }

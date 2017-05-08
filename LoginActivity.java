@@ -2,8 +2,12 @@ package com.example.jorge.adaptable;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,111 +15,88 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText eUsuario,ePassword;
-    Button bInicio;
-    TextView tReg;
-    String username="", password="",email="";
+        private LoginButton loginButton;
+        private CallbackManager callbackManager;
 
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_login);
 
+            try {
+                PackageInfo info = getPackageManager().getPackageInfo(
+                        "com.example.jorge.adaptable",
+                        PackageManager.GET_SIGNATURES);
+                for (Signature signature : info.signatures) {
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                }
+            } catch (PackageManager.NameNotFoundException e) {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+            } catch (NoSuchAlgorithmException e) {
 
-        prefs = getSharedPreferences("MisPreferencias",MODE_PRIVATE);
-        editor = prefs.edit();
+            }
 
+            if (AccessToken.getCurrentAccessToken() != null){
+                goMainActivity2();
+            }
 
-        eUsuario=(EditText)findViewById(R.id.eUsuario);
-        ePassword=(EditText)findViewById(R.id.ePassword);
-        bInicio=(Button) findViewById(R.id.bInicio);
-        tReg=(TextView) findViewById(R.id.tReg);
+            loginButton = (LoginButton) findViewById(R.id.login_button);
+            loginButton.setReadPermissions(Arrays.asList("email"));
 
-        username = prefs.getString("username","");
-        password = prefs.getString("password","");
-        email = prefs.getString("email","");
+            callbackManager = CallbackManager.Factory.create();
 
-        if (prefs.getInt("login",-1)==1){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("username", username);
-            intent.putExtra("password", password);
-            intent.putExtra("email", email);
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    goMainActivity2();
+                }
+
+                @Override
+                public void onCancel() {
+                    Toast.makeText(getApplicationContext(), "Login Cancelado", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(FacebookException error) {
+                    Toast.makeText(getApplicationContext(), "Error en Login", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+
+        private void goMainActivity2(){
+
+            String username,id;
+            Profile perfil= com.facebook.Profile.getCurrentProfile();
+            username= perfil.getName();
+            id= perfil.getId();
+
+            Intent intent = new Intent (LoginActivity.this, MainActivity.class);
+            intent.putExtra("username",username);
+            intent.putExtra("ID",id);
 
             startActivity(intent);
-
-
-        }
-
-
-        Bundle extras = getIntent().getExtras();
-
-
-        bInicio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (!eUsuario.getText().toString().equals("") && !ePassword.getText().toString().equals("")) {
-
-                    if (eUsuario.getText().toString().equals(username) && ePassword.getText().toString().equals(password)) {
-
-                        editor.putInt("login",1); //1 significa alguien loggeado 0 sin loggear
-                        editor.commit();
-                        Intent intent = new Intent(LoginActivity.this, Main2Activity.class);
-                        intent.putExtra("username", username);
-                        intent.putExtra("password", password);
-                        intent.putExtra("email", email);
-
-                        startActivity(intent);
-                        //                    finish();
-                    } else {
-
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.ToastUser), Toast.LENGTH_SHORT).show();
-
-                    }
-
-                } else {
-
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.ToastCampos), Toast.LENGTH_SHORT).show();
-
-                }
-            }
-
-        });
-
-        tReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent= new Intent(LoginActivity.this, RegistroActivity.class);
-                startActivityForResult(intent,1234);
-
-            }
-        });
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==1234 && resultCode==RESULT_OK){
-
-            username = data.getExtras().getString("username");
-            password = data.getExtras().getString("password");
-            email = data.getExtras().getString("email");
-            editor.putString("username",username);
-            editor.putString("password",password);
-            editor.putString("email",email);
-
-
-        }
-
-        if (requestCode==1234 && resultCode== RESULT_CANCELED){
-
-            Toast.makeText(this,getResources().getString(R.string.ToastErrorReg),Toast.LENGTH_SHORT).show();
         }
     }
-}
