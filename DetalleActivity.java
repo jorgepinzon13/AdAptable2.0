@@ -16,11 +16,10 @@ public class DetalleActivity extends AppCompatActivity {
     public static final String VIEW_NAME_HEADER_IMAGE = "imagen_compartida";
     private Promo itemDetallado;
     private ImageView imagenExtendida;
-    String username;
+    String id;
     Intent intent;
     ImageView bBusq,bPerfil,bUbi,bConf;
     TextView bAdaptable;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +42,13 @@ public class DetalleActivity extends AppCompatActivity {
         bAdaptable = (TextView) findViewById(R.id.bAdaptable);
 
         Bundle extras = getIntent().getExtras();
-        username = extras.getString("username");
+        id = extras.getString("ID");
 
         bAdaptable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, MainActivity.class);
-                intent.putExtra("username",username);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -59,7 +58,7 @@ public class DetalleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, Search2Activity.class);
-                intent.putExtra("username",username);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -70,7 +69,7 @@ public class DetalleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, Perfil2Activity.class);
-                intent.putExtra("username",username);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -81,7 +80,7 @@ public class DetalleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, MapsActivity.class);
-                intent.putExtra("username",username);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }
@@ -92,7 +91,7 @@ public class DetalleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(DetalleActivity.this, Settings2Activity.class);
-                intent.putExtra("username",username);
+                intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
             }

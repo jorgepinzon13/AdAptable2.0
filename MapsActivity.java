@@ -24,12 +24,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    String username,id;
+    String id;
     Intent intent;
     ImageView bBusq, bPerfil, bUbi, bConf;
     TextView bAdaptable;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +52,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bAdaptable = (TextView) findViewById(R.id.bAdaptable);
 
         Bundle extras = getIntent().getExtras();
-        username = extras.getString("username");
         id = extras.getString("ID");
 
         bAdaptable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                intent.putExtra("username", username);
                 intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
@@ -69,7 +68,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, Search2Activity.class);
-                intent.putExtra("username", username);
                 intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
@@ -81,7 +79,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, Perfil2Activity.class);
-                intent.putExtra("username", username);
                 intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();
@@ -93,7 +90,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, Settings2Activity.class);
-                intent.putExtra("username", username);
                 intent.putExtra("ID",id);
                 startActivity(intent);
                 finish();

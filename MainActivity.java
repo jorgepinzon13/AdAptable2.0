@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -17,12 +18,15 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity
   implements AdapterView.OnItemClickListener {
         private GridView gridView;
         private AdaptadordePromos adaptador;
 
-        String username,id;
+        String id;
         Intent intent;
         ImageView bBusq,bPerfil,bUbi,bConf;
         TextView bAdaptable;
@@ -38,7 +42,11 @@ public class MainActivity extends AppCompatActivity
             gridView.setAdapter(adaptador);
             gridView.setOnItemClickListener(this);
 
-            prefs = getSharedPreferences("MisPreferencias",MODE_PRIVATE);
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            id = user.getUid();
+
+
+            prefs = getSharedPreferences("MisPreferencias", MODE_PRIVATE);
             editor = prefs.edit();
 
             int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -65,15 +73,11 @@ public class MainActivity extends AppCompatActivity
             bConf = (ImageView) findViewById(R.id.bConf);
             bAdaptable = (TextView) findViewById(R.id.bAdaptable);
 
-            Bundle extras = getIntent().getExtras();
-            username = extras.getString("username");
-            id = extras.getString("ID");
 
             bBusq.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent= new Intent(MainActivity.this, Search2Activity.class);
-                    intent.putExtra("username",username);
                     intent.putExtra("ID",id);
                     startActivity(intent);
                     finish();
@@ -85,7 +89,6 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     Intent intent= new Intent(MainActivity.this, Perfil2Activity.class);
-                    intent.putExtra("username",username);
                     intent.putExtra("ID",id);
                     startActivity(intent);
                     finish();
@@ -97,7 +100,6 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     Intent intent= new Intent(MainActivity.this, MapsActivity.class);
-                    intent.putExtra("username",username);
                     intent.putExtra("ID",id);
                     startActivity(intent);
                     finish();
@@ -109,7 +111,6 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     Intent intent= new Intent(MainActivity.this, Settings2Activity.class);
-                    intent.putExtra("username",username);
                     intent.putExtra("ID",id);
                     startActivity(intent);
                     finish();
@@ -145,6 +146,7 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = new Intent(this, DetalleActivity.class);
         intent.putExtra(DetalleActivity.EXTRA_PARAM_ID, item.getId());
+        intent.putExtra("ID",id);
         startActivity(intent);
     }
 }
